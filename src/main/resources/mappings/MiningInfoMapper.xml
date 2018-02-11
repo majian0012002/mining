@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miller.mining.mapper.MiningInfoMapper">
+  <resultMap id="BaseResultMap" type="com.miller.mining.model.MiningInfo">
+    <id column="MiningInfo_ID" jdbcType="INTEGER" property="id" />
+    <result column="MiningInfo_USER_ID" jdbcType="INTEGER" property="userId" />
+    <result column="MiningInfo_START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="MiningInfo_END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="MiningInfo_TYPE" jdbcType="INTEGER" property="type" />
+    <result column="MiningInfo_STATE" jdbcType="INTEGER" property="state" />
+    <result column="MiningInfo_RUNNING_TIME" jdbcType="DECIMAL" property="runningTime" />
+    <result column="MiningInfo_RUNNING_MILE" jdbcType="DECIMAL" property="runningMile" />
+    <result column="MiningInfo_MINING_AMOUNT" jdbcType="DECIMAL" property="miningAmount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MiningInfo.ID as MiningInfo_ID, MiningInfo.USER_ID as MiningInfo_USER_ID, MiningInfo.START_TIME as MiningInfo_START_TIME, 
+    MiningInfo.END_TIME as MiningInfo_END_TIME, MiningInfo.TYPE as MiningInfo_TYPE, MiningInfo.STATE as MiningInfo_STATE, 
+    MiningInfo.RUNNING_TIME as MiningInfo_RUNNING_TIME, MiningInfo.RUNNING_MILE as MiningInfo_RUNNING_MILE, 
+    MiningInfo.MINING_AMOUNT as MiningInfo_MINING_AMOUNT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tab_mininginfo MiningInfo
+    where MiningInfo.ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tab_mininginfo
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.miller.mining.model.MiningInfo" useGeneratedKeys="true">
+    insert into tab_mininginfo (USER_ID, START_TIME, END_TIME, 
+      TYPE, STATE, RUNNING_TIME, 
+      RUNNING_MILE, MINING_AMOUNT)
+    values (#{userId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{type,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{runningTime,jdbcType=DECIMAL}, 
+      #{runningMile,jdbcType=DECIMAL}, #{miningAmount,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.miller.mining.model.MiningInfo" useGeneratedKeys="true">
+    insert into tab_mininginfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="endTime != null">
+        END_TIME,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="state != null">
+        STATE,
+      </if>
+      <if test="runningTime != null">
+        RUNNING_TIME,
+      </if>
+      <if test="runningMile != null">
+        RUNNING_MILE,
+      </if>
+      <if test="miningAmount != null">
+        MINING_AMOUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="runningTime != null">
+        #{runningTime,jdbcType=DECIMAL},
+      </if>
+      <if test="runningMile != null">
+        #{runningMile,jdbcType=DECIMAL},
+      </if>
+      <if test="miningAmount != null">
+        #{miningAmount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.miller.mining.model.MiningInfo">
+    update tab_mininginfo
+    <set>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        STATE = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="runningTime != null">
+        RUNNING_TIME = #{runningTime,jdbcType=DECIMAL},
+      </if>
+      <if test="runningMile != null">
+        RUNNING_MILE = #{runningMile,jdbcType=DECIMAL},
+      </if>
+      <if test="miningAmount != null">
+        MINING_AMOUNT = #{miningAmount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.miller.mining.model.MiningInfo">
+    update tab_mininginfo
+    set USER_ID = #{userId,jdbcType=INTEGER},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      TYPE = #{type,jdbcType=INTEGER},
+      STATE = #{state,jdbcType=INTEGER},
+      RUNNING_TIME = #{runningTime,jdbcType=DECIMAL},
+      RUNNING_MILE = #{runningMile,jdbcType=DECIMAL},
+      MINING_AMOUNT = #{miningAmount,jdbcType=DECIMAL}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

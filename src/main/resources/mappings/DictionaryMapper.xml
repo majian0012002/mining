@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miller.mining.mapper.DictionaryMapper">
+  <resultMap id="BaseResultMap" type="com.miller.mining.model.Dictionary">
+    <id column="Dictionary_ID" jdbcType="INTEGER" property="id" />
+    <result column="Dictionary_DIC_KEY" jdbcType="VARCHAR" property="dicKey" />
+    <result column="Dictionary_DIC_VALUE" jdbcType="VARCHAR" property="dicValue" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Dictionary.ID as Dictionary_ID, Dictionary.DIC_KEY as Dictionary_DIC_KEY, Dictionary.DIC_VALUE as Dictionary_DIC_VALUE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tab_dictionary Dictionary
+    where Dictionary.ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tab_dictionary
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.miller.mining.model.Dictionary" useGeneratedKeys="true">
+    insert into tab_dictionary (DIC_KEY, DIC_VALUE)
+    values (#{dicKey,jdbcType=VARCHAR}, #{dicValue,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.miller.mining.model.Dictionary" useGeneratedKeys="true">
+    insert into tab_dictionary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dicKey != null">
+        DIC_KEY,
+      </if>
+      <if test="dicValue != null">
+        DIC_VALUE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dicKey != null">
+        #{dicKey,jdbcType=VARCHAR},
+      </if>
+      <if test="dicValue != null">
+        #{dicValue,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.miller.mining.model.Dictionary">
+    update tab_dictionary
+    <set>
+      <if test="dicKey != null">
+        DIC_KEY = #{dicKey,jdbcType=VARCHAR},
+      </if>
+      <if test="dicValue != null">
+        DIC_VALUE = #{dicValue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.miller.mining.model.Dictionary">
+    update tab_dictionary
+    set DIC_KEY = #{dicKey,jdbcType=VARCHAR},
+      DIC_VALUE = #{dicValue,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
