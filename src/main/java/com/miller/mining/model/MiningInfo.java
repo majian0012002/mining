@@ -3,13 +3,22 @@ package com.miller.mining.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 public class MiningInfo extends BaseModel {
-    private Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 175024108290214439L;
+
+	private Integer id;
 
     private Integer userId;
 
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     private Integer type;
