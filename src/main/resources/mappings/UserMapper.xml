@@ -3,12 +3,12 @@
 <mapper namespace="com.miller.mining.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="com.miller.mining.model.User">
     <id column="User_ID" jdbcType="INTEGER" property="id" />
-    <result column="User_PHONE_NUMBER" jdbcType="VARCHAR" property="phoneNumber" />
+    <result column="User_PHONE_ID" jdbcType="VARCHAR" property="phoneId" />
     <result column="User_PASSWORD" jdbcType="VARCHAR" property="password" />
     <result column="User_USERNAME" jdbcType="VARCHAR" property="username" />
   </resultMap>
   <sql id="Base_Column_List">
-    User.ID as User_ID, User.PHONE_NUMBER as User_PHONE_NUMBER, User.PASSWORD as User_PASSWORD, 
+    User.ID as User_ID, User.PHONE_ID as User_PHONE_ID, User.PASSWORD as User_PASSWORD, 
     User.USERNAME as User_USERNAME
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -22,16 +22,16 @@
     where ID = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.miller.mining.model.User" useGeneratedKeys="true">
-    insert into tab_user (PHONE_NUMBER, PASSWORD, USERNAME
+    insert into tab_user (PHONE_ID, PASSWORD, USERNAME
       )
-    values (#{phoneNumber,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}
+    values (#{phoneId,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.miller.mining.model.User" useGeneratedKeys="true">
     insert into tab_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="phoneNumber != null">
-        PHONE_NUMBER,
+      <if test="phoneId != null">
+        PHONE_ID,
       </if>
       <if test="password != null">
         PASSWORD,
@@ -41,8 +41,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="phoneNumber != null">
-        #{phoneNumber,jdbcType=VARCHAR},
+      <if test="phoneId != null">
+        #{phoneId,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
@@ -55,8 +55,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.miller.mining.model.User">
     update tab_user
     <set>
-      <if test="phoneNumber != null">
-        PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+      <if test="phoneId != null">
+        PHONE_ID = #{phoneId,jdbcType=VARCHAR},
       </if>
       <if test="password != null">
         PASSWORD = #{password,jdbcType=VARCHAR},
@@ -69,7 +69,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.miller.mining.model.User">
     update tab_user
-    set PHONE_NUMBER = #{phoneNumber,jdbcType=VARCHAR},
+    set PHONE_ID = #{phoneId,jdbcType=VARCHAR},
       PASSWORD = #{password,jdbcType=VARCHAR},
       USERNAME = #{username,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}

@@ -27,7 +27,7 @@ public class DruidConfig {
 	private String dbUrl;
 	@Value("${spring.datasource.username}")
 	private String username;
-	@Value("${sspring.datasource.password}")
+	@Value("${spring.datasource.password}")
 	private String password;
 	@Value("${spring.datasource.driver-class-name}")
 	private String driverClassName;

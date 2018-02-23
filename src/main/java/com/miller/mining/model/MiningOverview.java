@@ -3,12 +3,7 @@ package com.miller.mining.model;
 import java.math.BigDecimal;
 
 public class MiningOverview extends BaseModel {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -7941778295658113579L;
-
-	private Integer id;
+    private Integer id;
 
     private Integer userId;
 

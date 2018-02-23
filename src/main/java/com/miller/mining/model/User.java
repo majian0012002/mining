@@ -3,7 +3,7 @@ package com.miller.mining.model;
 public class User extends BaseModel {
     private Integer id;
 
-    private String phoneNumber;
+    private String phoneId;
 
     private String password;
 
@@ -17,12 +17,12 @@ public class User extends BaseModel {
         this.id = id;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhoneId() {
+        return phoneId;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber == null ? null : phoneNumber.trim();
+    public void setPhoneId(String phoneId) {
+        this.phoneId = phoneId == null ? null : phoneId.trim();
     }
 
     public String getPassword() {

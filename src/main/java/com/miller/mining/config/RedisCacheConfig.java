@@ -3,6 +3,8 @@ package com.miller.mining.config;
 import org.apache.log4j.Logger;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -12,8 +14,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration
+@EnableCaching
 @EnableAutoConfiguration
-public class RedisCacheConfig {
+public class RedisCacheConfig extends CachingConfigurerSupport {
 
 	private Logger logger = Logger.getLogger(RedisCacheConfig.class);
 	
@@ -33,7 +36,8 @@ public class RedisCacheConfig {
 		logger.info("JedisConnectionFactory bean init success.");
 		return factory;
 	}
-	
+
+	@Bean
 	public RedisTemplate<String,?> getRedisTemplate() {
 		RedisTemplate<String,?> template = new StringRedisTemplate(getRedisConnectionFactory());
 		return template;
