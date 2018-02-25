@@ -37,22 +37,22 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="tab_user" domainObjectName="User" alias="User"  enableCountByExample="false"
+        <table tableName="tab_user" domainObjectName="User"  enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <generatedKey column="ID" sqlStatement="JDBC"/>
         </table>
-        <table tableName="tab_mininginfo" domainObjectName="MiningInfo" alias="MiningInfo"  enableCountByExample="false"
+        <table tableName="tab_mininginfo" domainObjectName="MiningInfo"  enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <generatedKey column="ID" sqlStatement="JDBC"/>
         </table>
-        <table tableName="tab_miningoverview" domainObjectName="MiningOverview" alias="MiningOverview"  enableCountByExample="false"
+        <table tableName="tab_miningoverview" domainObjectName="MiningOverview"  enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <generatedKey column="ID" sqlStatement="JDBC"/>
         </table>
-        <table tableName="tab_dictionary" domainObjectName="Dictionary" alias="Dictionary"  enableCountByExample="false"
+        <table tableName="tab_dictionary" domainObjectName="Dictionary"  enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <generatedKey column="ID" sqlStatement="JDBC"/>

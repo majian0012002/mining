@@ -2,27 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.miller.mining.mapper.MiningInfoMapper">
   <resultMap id="BaseResultMap" type="com.miller.mining.model.MiningInfo">
-    <id column="MiningInfo_ID" jdbcType="INTEGER" property="id" />
-    <result column="MiningInfo_USER_ID" jdbcType="INTEGER" property="userId" />
-    <result column="MiningInfo_START_TIME" jdbcType="TIMESTAMP" property="startTime" />
-    <result column="MiningInfo_END_TIME" jdbcType="TIMESTAMP" property="endTime" />
-    <result column="MiningInfo_TYPE" jdbcType="INTEGER" property="type" />
-    <result column="MiningInfo_STATE" jdbcType="INTEGER" property="state" />
-    <result column="MiningInfo_RUNNING_TIME" jdbcType="DECIMAL" property="runningTime" />
-    <result column="MiningInfo_RUNNING_MILE" jdbcType="DECIMAL" property="runningMile" />
-    <result column="MiningInfo_MINING_AMOUNT" jdbcType="DECIMAL" property="miningAmount" />
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="USER_ID" jdbcType="INTEGER" property="userId" />
+    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="TYPE" jdbcType="INTEGER" property="type" />
+    <result column="STATE" jdbcType="INTEGER" property="state" />
+    <result column="RUNNING_TIME" jdbcType="DECIMAL" property="runningTime" />
+    <result column="RUNNING_MILE" jdbcType="DECIMAL" property="runningMile" />
+    <result column="MINING_AMOUNT" jdbcType="DECIMAL" property="miningAmount" />
   </resultMap>
   <sql id="Base_Column_List">
-    MiningInfo.ID as MiningInfo_ID, MiningInfo.USER_ID as MiningInfo_USER_ID, MiningInfo.START_TIME as MiningInfo_START_TIME, 
-    MiningInfo.END_TIME as MiningInfo_END_TIME, MiningInfo.TYPE as MiningInfo_TYPE, MiningInfo.STATE as MiningInfo_STATE, 
-    MiningInfo.RUNNING_TIME as MiningInfo_RUNNING_TIME, MiningInfo.RUNNING_MILE as MiningInfo_RUNNING_MILE, 
-    MiningInfo.MINING_AMOUNT as MiningInfo_MINING_AMOUNT
+    ID, USER_ID, START_TIME, END_TIME, TYPE, STATE, RUNNING_TIME, RUNNING_MILE, MINING_AMOUNT
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tab_mininginfo MiningInfo
-    where MiningInfo.ID = #{id,jdbcType=INTEGER}
+    from tab_mininginfo
+    where ID = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tab_mininginfo

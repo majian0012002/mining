@@ -1,6 +1,6 @@
 package com.miller.mining.exception;
 
-public class VerifyException extends RuntimeException {
+public class VerifyException extends Exception {
 
     public VerifyException() {
     }

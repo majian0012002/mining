@@ -1,6 +1,6 @@
 package com.miller.mining.exception;
 
-public class MiningException extends RuntimeException {
+public class MiningException extends Exception {
 
     public MiningException() {
     }

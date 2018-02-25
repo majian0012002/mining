@@ -75,12 +75,32 @@ public class EncryUtil {
         return null;
     }
 
-    /**
+    public static String base64Encode(String content) {
+        try {
+            byte[] encodebytes = Base64.getEncoder().encode(content.getBytes("utf-8"));
+            return new String(encodebytes,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static String base64Decode(String content) {
+        try {
+            byte[] decodebytes = Base64.getDecoder().decode(content);
+            return new String(decodebytes,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+
     public static void main(String[] args) {
-        String str = "{\"username\":\"啊是大\",\"password\":\"123456\"}";
+        String str = "{\"username\":\"miller\",\"password\":\"123456\",\"phoneid\":\"iamsuperman\"}";
         String t = EncryUtil.AESEncode(str);
         System.out.println("加密前:" + str);
         System.out.println("加密后:" + t);
         System.out.println("解密后:" + EncryUtil.AESDecode(t));
-    }**/
+    }
 }

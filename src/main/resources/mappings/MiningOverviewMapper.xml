@@ -2,22 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.miller.mining.mapper.MiningOverviewMapper">
   <resultMap id="BaseResultMap" type="com.miller.mining.model.MiningOverview">
-    <id column="MiningOverview_ID" jdbcType="INTEGER" property="id" />
-    <result column="MiningOverview_USER_ID" jdbcType="INTEGER" property="userId" />
-    <result column="MiningOverview_TOTAL_AMOUNT" jdbcType="DECIMAL" property="totalAmount" />
-    <result column="MiningOverview_TOTAL_MILE" jdbcType="DECIMAL" property="totalMile" />
-    <result column="MiningOverview_TOTAL_TIME" jdbcType="DECIMAL" property="totalTime" />
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="USER_ID" jdbcType="INTEGER" property="userId" />
+    <result column="TOTAL_AMOUNT" jdbcType="DECIMAL" property="totalAmount" />
+    <result column="TOTAL_MILE" jdbcType="DECIMAL" property="totalMile" />
+    <result column="TOTAL_TIME" jdbcType="DECIMAL" property="totalTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    MiningOverview.ID as MiningOverview_ID, MiningOverview.USER_ID as MiningOverview_USER_ID, 
-    MiningOverview.TOTAL_AMOUNT as MiningOverview_TOTAL_AMOUNT, MiningOverview.TOTAL_MILE as MiningOverview_TOTAL_MILE, 
-    MiningOverview.TOTAL_TIME as MiningOverview_TOTAL_TIME
+    ID, USER_ID, TOTAL_AMOUNT, TOTAL_MILE, TOTAL_TIME
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tab_miningoverview MiningOverview
-    where MiningOverview.ID = #{id,jdbcType=INTEGER}
+    from tab_miningoverview
+    where ID = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tab_miningoverview

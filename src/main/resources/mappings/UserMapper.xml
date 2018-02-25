@@ -2,20 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.miller.mining.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="com.miller.mining.model.User">
-    <id column="User_ID" jdbcType="INTEGER" property="id" />
-    <result column="User_PHONE_ID" jdbcType="VARCHAR" property="phoneId" />
-    <result column="User_PASSWORD" jdbcType="VARCHAR" property="password" />
-    <result column="User_USERNAME" jdbcType="VARCHAR" property="username" />
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="PHONE_ID" jdbcType="VARCHAR" property="phoneId" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
   </resultMap>
   <sql id="Base_Column_List">
-    User.ID as User_ID, User.PHONE_ID as User_PHONE_ID, User.PASSWORD as User_PASSWORD, 
-    User.USERNAME as User_USERNAME
+    ID, PHONE_ID, PASSWORD, USERNAME
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tab_user User
-    where User.ID = #{id,jdbcType=INTEGER}
+    from tab_user
+    where ID = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tab_user
@@ -74,4 +73,36 @@
       USERNAME = #{username,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- 自定义 -->
+  <select id="countByUsername" parameterType="java.lang.String" resultType="int">
+    select count(*)
+    from tab_user
+    where USERNAME = #{username,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectUser" parameterType="com.miller.mining.model.User" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from tab_user
+    <where>
+      <if test="user.id != null">
+        AND ID = #{user.id,jdbcType=INTEGER}
+      </if>
+      <if test="user.username != null">
+        AND USERNAME = #{user.username,jdbcType=VARCHAR}
+      </if>
+      <if test="user.password != null">
+        AND PASSWORD = #{user.password,jdbcType=VARCHAR}
+      </if>
+      <if test="user.phoneId != null">
+        AND PHONE_ID = #{user.phoneId,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectUserByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from tab_user
+    where USERNAME = #{username,jdbcType=VARCHAR}
+  </select>
 </mapper>
