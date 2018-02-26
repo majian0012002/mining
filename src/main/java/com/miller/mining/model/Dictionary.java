@@ -1,7 +1,12 @@
 package com.miller.mining.model;
 
 public class Dictionary extends BaseModel {
-    private Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1588944617875054086L;
+
+	private Integer id;
 
     private String dicKey;
 

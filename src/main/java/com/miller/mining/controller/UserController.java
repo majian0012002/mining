@@ -3,6 +3,7 @@ package com.miller.mining.controller;
 import com.miller.mining.callback.ControllerCallbackHandler;
 import com.miller.mining.comm.ResponseCodeEnum;
 import com.miller.mining.exception.LoginFailedException;
+import com.miller.mining.exception.MiningException;
 import com.miller.mining.exception.TransforVoFaildedException;
 import com.miller.mining.exception.VerifyException;
 import com.miller.mining.model.User;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -60,6 +60,12 @@ public class UserController extends BaseController {
                     map.put("resultCode", ResponseCodeEnum.SUCCESS.getCode());
                     map.put("resultMessage",ResponseCodeEnum.SUCCESS.getDescription());
                 }
+
+				@Override
+				public boolean check(HttpServletRequest request, String requestContent) {
+					// TODO Auto-generated method stub
+					return true;
+				}
             });
         } catch (VerifyException e) {
             map.put("resultCode",ResponseCodeEnum.VERIFY_INVALID.getCode());
@@ -70,7 +76,10 @@ public class UserController extends BaseController {
         } catch (TransforVoFaildedException e) {
             map.put("resultCode",ResponseCodeEnum.DATA_INVALID.getCode());
             map.put("resultMessage",e.getMessage());
-        }
+        } catch (MiningException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 
         return map;
@@ -116,6 +125,12 @@ public class UserController extends BaseController {
                     map.put("resultMessage",ResponseCodeEnum.SUCCESS.getDescription());
 
                 }
+
+				@Override
+				public boolean check(HttpServletRequest request, String requestContent) {
+					// TODO Auto-generated method stub
+					return true;
+				}
             });
         } catch (VerifyException e) {
             map.put("resultCode",ResponseCodeEnum.VERIFY_INVALID.getCode());
@@ -126,7 +141,10 @@ public class UserController extends BaseController {
         } catch (TransforVoFaildedException e) {
             map.put("resultCode",ResponseCodeEnum.DATA_INVALID.getCode());
             map.put("resultMessage",e.getMessage());
-        }
+        } catch (MiningException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return map;
     }
 

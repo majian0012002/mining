@@ -14,4 +14,11 @@ public interface MiningOverviewMapper {
     int updateByPrimaryKeySelective(MiningOverview record);
 
     int updateByPrimaryKey(MiningOverview record);
+    
+    /**
+     * 根据用户查询
+     * @param username
+     * @return
+     */
+    MiningOverview selectByUser(int userId);
 }

@@ -1,7 +1,6 @@
 package com.miller.mining.controller;
 
 import com.miller.mining.callback.ControllerCallbackHandler;
-import com.miller.mining.comm.ResponseCodeEnum;
 import com.miller.mining.exception.LoginFailedException;
 import com.miller.mining.exception.MiningException;
 import com.miller.mining.exception.TransforVoFaildedException;
@@ -10,8 +9,6 @@ import com.miller.mining.utils.EncryUtil;
 import com.miller.mining.vo.RequestVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,7 +16,7 @@ public class BaseController {
 
     private Logger logger = LoggerFactory.getLogger(BaseController.class);
 
-    public void executeWithoutLogin(HttpServletRequest request, RequestVo reqVo, ControllerCallbackHandler callback) throws VerifyException, LoginFailedException, TransforVoFaildedException {
+    public void executeWithoutLogin(HttpServletRequest request, RequestVo reqVo, ControllerCallbackHandler callback) throws VerifyException, LoginFailedException, TransforVoFaildedException, MiningException {
         /**
         if(null == reqVo || reqVo.getContent().equals("")) {
                 throw new VerifyException("请求报文为空");
@@ -37,7 +34,14 @@ public class BaseController {
     public void executeWithLogin(HttpServletRequest request, RequestVo reqVo, ControllerCallbackHandler callback) throws VerifyException, LoginFailedException, TransforVoFaildedException {
         String content = execute(request,reqVo);
 
-        callback.doMVC(request,content);
+        boolean isLogin = callback.check(request, content);
+        
+        if(isLogin) {
+        	callback.doMVC(request,content);
+        } else {
+        	throw new LoginFailedException("登陆已实效，请重新登陆");
+        }
+        
     }
 
     public String execute(HttpServletRequest request, RequestVo reqVo) throws VerifyException {

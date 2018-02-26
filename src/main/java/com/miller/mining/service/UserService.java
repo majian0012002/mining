@@ -18,4 +18,6 @@ public interface UserService {
      * @return
      */
     public boolean login(User user) throws VerifyException;
+    
+    public User getUserByUsername(String username);
 }

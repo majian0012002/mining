@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.miller.mining.model.MiningInfo">
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="USER_ID" jdbcType="INTEGER" property="userId" />
-    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
-    <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="START_TIME" jdbcType="VARCHAR" property="startTime" />
+    <result column="END_TIME" jdbcType="VARCHAR" property="endTime" />
     <result column="TYPE" jdbcType="INTEGER" property="type" />
     <result column="STATE" jdbcType="INTEGER" property="state" />
     <result column="RUNNING_TIME" jdbcType="DECIMAL" property="runningTime" />
@@ -29,7 +29,7 @@
     insert into tab_mininginfo (USER_ID, START_TIME, END_TIME, 
       TYPE, STATE, RUNNING_TIME, 
       RUNNING_MILE, MINING_AMOUNT)
-    values (#{userId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+    values (#{userId,jdbcType=INTEGER}, #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, 
       #{type,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{runningTime,jdbcType=DECIMAL}, 
       #{runningMile,jdbcType=DECIMAL}, #{miningAmount,jdbcType=DECIMAL})
   </insert>
@@ -66,10 +66,10 @@
         #{userId,jdbcType=INTEGER},
       </if>
       <if test="startTime != null">
-        #{startTime,jdbcType=TIMESTAMP},
+        #{startTime,jdbcType=VARCHAR},
       </if>
       <if test="endTime != null">
-        #{endTime,jdbcType=TIMESTAMP},
+        #{endTime,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
         #{type,jdbcType=INTEGER},
@@ -95,10 +95,10 @@
         USER_ID = #{userId,jdbcType=INTEGER},
       </if>
       <if test="startTime != null">
-        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+        START_TIME = #{startTime,jdbcType=VARCHAR},
       </if>
       <if test="endTime != null">
-        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+        END_TIME = #{endTime,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
         TYPE = #{type,jdbcType=INTEGER},
@@ -121,8 +121,8 @@
   <update id="updateByPrimaryKey" parameterType="com.miller.mining.model.MiningInfo">
     update tab_mininginfo
     set USER_ID = #{userId,jdbcType=INTEGER},
-      START_TIME = #{startTime,jdbcType=TIMESTAMP},
-      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      START_TIME = #{startTime,jdbcType=VARCHAR},
+      END_TIME = #{endTime,jdbcType=VARCHAR},
       TYPE = #{type,jdbcType=INTEGER},
       STATE = #{state,jdbcType=INTEGER},
       RUNNING_TIME = #{runningTime,jdbcType=DECIMAL},
@@ -130,4 +130,13 @@
       MINING_AMOUNT = #{miningAmount,jdbcType=DECIMAL}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 自定义 -->
+  <select id="selectActiveByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tab_mininginfo
+    where USERNAME = #{username,jdbcType=VARCHAR} 
+    	AND STATE = 0
+  </select>
 </mapper>

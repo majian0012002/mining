@@ -1,7 +1,6 @@
 package com.miller.mining.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.miller.mining.vo.UserRegisterVo;
 
 import java.io.IOException;
 
@@ -25,8 +24,10 @@ public class JsonUtil {
         }
     }
 
+    /**
     public static void main(String[] args) {
         String str = "{\"username\":\"miller\",\"password\":\"123456\",\"phoneid\":\"asdanawihfiaw\"}";
         UserRegisterVo vo = transforJsonToVO(str,UserRegisterVo.class);
     }
+    **/
 }

@@ -1,7 +1,12 @@
 package com.miller.mining.model;
 
 public class User extends BaseModel {
-    private Integer id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8615550573879119102L;
+
+	private Integer id;
 
     private String phoneId;
 

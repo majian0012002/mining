@@ -1,8 +1,5 @@
 package com.miller.mining.utils;
 
-import com.miller.mining.comm.encrypt.DES;
-import sun.misc.BASE64Encoder;
-
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;

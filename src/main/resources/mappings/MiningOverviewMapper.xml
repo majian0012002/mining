@@ -84,4 +84,12 @@
       TOTAL_TIME = #{totalTime,jdbcType=DECIMAL}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 自定义 -->
+  <select id="selectByUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tab_miningoverview
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </select>
 </mapper>

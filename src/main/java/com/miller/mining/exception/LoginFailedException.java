@@ -2,7 +2,12 @@ package com.miller.mining.exception;
 
 public class LoginFailedException extends Exception {
 
-    public LoginFailedException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4197982891104420507L;
+
+	public LoginFailedException() {
     }
 
     public LoginFailedException(String message) {

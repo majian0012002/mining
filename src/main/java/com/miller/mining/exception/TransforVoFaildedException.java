@@ -2,7 +2,12 @@ package com.miller.mining.exception;
 
 public class TransforVoFaildedException extends Exception {
 
-    public TransforVoFaildedException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8541051331499050334L;
+
+	public TransforVoFaildedException() {
     }
 
     public TransforVoFaildedException(String message) {

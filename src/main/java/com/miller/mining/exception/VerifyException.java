@@ -2,7 +2,12 @@ package com.miller.mining.exception;
 
 public class VerifyException extends Exception {
 
-    public VerifyException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7782614345892193342L;
+
+	public VerifyException() {
     }
 
     public VerifyException(String message) {
