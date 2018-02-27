@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.miller.mining.comm.MiningRuleConstant;
 import com.miller.mining.exception.VerifyException;
 import com.miller.mining.mapper.MiningInfoMapper;
 import com.miller.mining.mapper.MiningOverviewMapper;
@@ -18,6 +18,7 @@ import com.miller.mining.model.MiningOverview;
 import com.miller.mining.model.User;
 import com.miller.mining.service.MiningService;
 import com.miller.mining.utils.DateUtil;
+import com.miller.mining.vo.MiningSingleVo;
 
 @Service
 public class MiningServiceImpl implements MiningService {
@@ -39,13 +40,14 @@ public class MiningServiceImpl implements MiningService {
 	}
 	
 	@Override
-	public void startMining(MiningInfo miningInfo, String username) {
+	public int startMining(MiningInfo miningInfo, String username) {
 		// TODO Auto-generated method stub
 		
 		User user = userMapper.selectUserByUsername(username);
 		logger.info("获取到的用户id: " + user.getId());
 		miningInfo.setUserId(user.getId());
-		miningInfoMapper.insert(miningInfo);
+		int id = miningInfoMapper.insertSelective(miningInfo);
+		return id;
 	}
 
 	@Override
@@ -74,4 +76,41 @@ public class MiningServiceImpl implements MiningService {
 			overviewMapper.updateByPrimaryKey(overview);
 		}
 	}
+
+	@Override
+	public String computeMiningAmoutInOrdinaryMode(MiningInfo mingInfo, MiningSingleVo vo) {
+		// TODO Auto-generated method stub
+		BigDecimal duringTime = new BigDecimal((vo.getDuringTime() == null || vo.getDuringTime().equals("")) ? 
+				"30" : vo.getDuringTime());
+		BigDecimal amout = duringTime.divide(new BigDecimal(30)).multiply(new BigDecimal(MiningRuleConstant.COIN_OF_PER_HALF_MINUTES));
+		amout.setScale(5, BigDecimal.ROUND_HALF_UP);
+		
+		//更新overview
+		return amout.toString();
+	}
+
+	@Override
+	public String computeMiningAmoutInSportsMode(MiningInfo mingInfo, MiningSingleVo vo) {
+		//根据时间计算挖掘数量
+		BigDecimal duringTime = new BigDecimal((vo.getDuringTime() == null || vo.getDuringTime().equals("")) ? 
+				"30" : vo.getDuringTime());
+		BigDecimal timeAmout = duringTime.divide(new BigDecimal(30)).multiply(new BigDecimal(MiningRuleConstant.COIN_OF_PER_HALF_MINUTES));
+		//根据里程计算挖掘数量
+		int mileDistance = vo.getCurrentMile() - vo.getLastMile();
+		mileDistance = mileDistance > 833 ? 833 : mileDistance;
+		BigDecimal mileAmout = new BigDecimal((double)mileDistance / 1000).multiply(new BigDecimal(MiningRuleConstant.COIN_OF_PER_MILE));
+		mileAmout = mileAmout.max(new BigDecimal(4.615));
+		
+		BigDecimal total = timeAmout.add(mileAmout);
+		total.setScale(5, BigDecimal.ROUND_HALF_UP);
+		return total.toString();
+	}
+
+	@Override
+	public MiningInfo getMiningInfoById(int id) {
+		// TODO Auto-generated method stub
+		MiningInfo info = miningInfoMapper.selectByPrimaryKey(id);
+		return info;
+	}
+
 }

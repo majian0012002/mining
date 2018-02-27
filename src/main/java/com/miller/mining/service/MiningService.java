@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.miller.mining.exception.VerifyException;
 import com.miller.mining.model.MiningInfo;
+import com.miller.mining.vo.MiningSingleVo;
 
 public interface MiningService {
 
@@ -15,12 +16,15 @@ public interface MiningService {
 	 */
 	public List<MiningInfo> getActiveMiningInfoByUsername(String username);
 	
+	public MiningInfo getMiningInfoById(int id);
+	
 	/**
 	 * 开始挖掘
 	 * @param miningInfo
 	 * @param string 
+	 * @return 
 	 */
-	public void startMining(MiningInfo miningInfo, String username);
+	public int startMining(MiningInfo miningInfo, String username);
 	
 	/**
 	 * 结束挖掘
@@ -29,5 +33,17 @@ public interface MiningService {
 	 * @throws VerifyException 
 	 * @throws ParseException 
 	 */
-	public void endMining(MiningInfo miningInfo, String username) throws ParseException, VerifyException; 
+	public void endMining(MiningInfo miningInfo, String username) throws ParseException, VerifyException;
+	
+	/**
+	 * 计算普通模式的金额
+	 * @return
+	 */
+	public String computeMiningAmoutInOrdinaryMode(MiningInfo mingInfo,MiningSingleVo vo);
+	
+	/**
+	 * 计算运动模式的挖矿金额
+	 * @return
+	 */
+	public String computeMiningAmoutInSportsMode(MiningInfo mingInfo,MiningSingleVo vo);
 }

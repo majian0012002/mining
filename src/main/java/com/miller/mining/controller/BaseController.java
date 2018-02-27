@@ -31,7 +31,7 @@ public class BaseController {
         callback.doMVC(request,content);
     }
 
-    public void executeWithLogin(HttpServletRequest request, RequestVo reqVo, ControllerCallbackHandler callback) throws VerifyException, LoginFailedException, TransforVoFaildedException {
+    public void executeWithLogin(HttpServletRequest request, RequestVo reqVo, ControllerCallbackHandler callback) throws VerifyException, LoginFailedException, TransforVoFaildedException, MiningException {
         String content = execute(request,reqVo);
 
         boolean isLogin = callback.check(request, content);

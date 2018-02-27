@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface ControllerCallbackHandler {
 
-    public void doMVC(HttpServletRequest request, String requestContent) throws VerifyException, TransforVoFaildedException, LoginFailedException;
+    public void doMVC(HttpServletRequest request, String requestContent) throws VerifyException, TransforVoFaildedException, LoginFailedException, MiningException;
     
     public boolean check(HttpServletRequest request, String requestContent) throws VerifyException;
 }

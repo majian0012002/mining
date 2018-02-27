@@ -34,4 +34,13 @@ public enum MiningTypeEnum {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    public static MiningTypeEnum getByValue(int value) {  
+        for (MiningTypeEnum type : values()) {  
+            if (type.getType() == value) {  
+                return type;  
+            }  
+        }  
+        return null;  
+    }  
 }

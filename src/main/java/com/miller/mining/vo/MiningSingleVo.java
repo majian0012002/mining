@@ -8,13 +8,13 @@ public class MiningSingleVo {
 	private String duringTime;
 	private int currentMile;
 	private int lastMile;
+	private int miningId;
 	
 	public MiningSingleVo() {
 		super();
 	}
-
 	public MiningSingleVo(String username, String userToken, int mingType, String duringTime, int currentMile,
-			int lastMile) {
+			int lastMile, int miningId) {
 		super();
 		this.username = username;
 		this.userToken = userToken;
@@ -22,7 +22,9 @@ public class MiningSingleVo {
 		this.duringTime = duringTime;
 		this.currentMile = currentMile;
 		this.lastMile = lastMile;
+		this.miningId = miningId;
 	}
+	
 
 	public String getUsername() {
 		return username;
@@ -70,5 +72,13 @@ public class MiningSingleVo {
 
 	public void setLastMile(int lastMile) {
 		this.lastMile = lastMile;
+	}
+
+	public int getMiningId() {
+		return miningId;
+	}
+
+	public void setMiningId(int miningId) {
+		this.miningId = miningId;
 	}
 }

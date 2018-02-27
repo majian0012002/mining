@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miller.mining.callback.ControllerCallbackHandler;
+import com.miller.mining.comm.MiningTypeEnum;
 import com.miller.mining.comm.ResponseCodeEnum;
 import com.miller.mining.exception.LoginFailedException;
+import com.miller.mining.exception.MiningException;
 import com.miller.mining.exception.TransforVoFaildedException;
 import com.miller.mining.exception.VerifyException;
 import com.miller.mining.model.MiningInfo;
@@ -211,17 +213,45 @@ public class MiningController extends BaseController {
 				
 				@Override
 				public void doMVC(HttpServletRequest request, String requestContent)
-						throws VerifyException, TransforVoFaildedException, LoginFailedException {
+						throws VerifyException, TransforVoFaildedException, LoginFailedException, MiningException {
 					MiningSingleVo miningVo = JsonUtil.transforJsonToVO(requestContent, MiningSingleVo.class);
 					//转化失败抛异常
 					if(null == miningVo) {
 						throw new VerifyException("解密后的报文信息转化vo异常");
 					}
 					
-					List<MiningInfo> storeInfoList = miningService.getActiveMiningInfoByUsername(miningVo.getUsername());
-					if(storeInfoList.size() == 1) {
-						
+					MiningInfo miningInfo = miningService.getMiningInfoById(miningVo.getMiningId());
+					
+					//查询不出来，抛异常
+					if(null == miningInfo) {
+						throw new MiningException("无法根据id查询出挖矿活动");
 					}
+					
+					//查询出的活动不在进行中，抛异常
+					if(miningInfo.getState() != 0) {
+						throw new MiningException("当前挖矿已经结束，请开始下次挖矿");
+					}
+					
+					//挖矿类型不一致抛出异常
+					if(miningInfo.getType() != miningVo.getMingType()) {
+						throw new MiningException("挖矿类型错误");
+					}
+					
+					String miningAmoutOfThisTime = "";
+					//根据不同挖矿类型进行计算
+					switch(MiningTypeEnum.getByValue(miningVo.getMingType())) {
+						case ORDINARY_MODE:
+							miningAmoutOfThisTime = miningService.computeMiningAmoutInOrdinaryMode(miningInfo, miningVo);
+							break;
+						case SPORTS_MODE:
+							miningAmoutOfThisTime = miningService.computeMiningAmoutInSportsMode(miningInfo, miningVo);
+							break;
+						default: break;
+					}
+					
+					map.put("resultCode", ResponseCodeEnum.SUCCESS.getCode());
+					map.put("resultMessage","请求成功");
+					map.put("increateCount", miningAmoutOfThisTime);
 				}
 				
 				@Override
@@ -259,6 +289,9 @@ public class MiningController extends BaseController {
 			map.put("resultMessage", e.getMessage());
 		} catch (TransforVoFaildedException e) {
 			// TODO Auto-generated catch block
+			map.put("resultCode", ResponseCodeEnum.DATA_INVALID.getCode());
+			map.put("resultMessage", e.getMessage());
+		} catch (MiningException e) {
 			map.put("resultCode", ResponseCodeEnum.DATA_INVALID.getCode());
 			map.put("resultMessage", e.getMessage());
 		} catch (Exception e) {
