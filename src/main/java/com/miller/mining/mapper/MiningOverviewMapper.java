@@ -2,6 +2,8 @@ package com.miller.mining.mapper;
 
 import com.miller.mining.model.MiningOverview;
 
+import java.util.List;
+
 public interface MiningOverviewMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -21,4 +23,10 @@ public interface MiningOverviewMapper {
      * @return
      */
     MiningOverview selectByUser(int userId);
+
+    /**
+     * 查询mining列表，根据金额排序
+     * @return
+     */
+    List<MiningOverview> queryListByMoneyOrder();
 }

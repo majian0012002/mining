@@ -2,8 +2,10 @@ package com.miller.mining.service.impl;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.miller.mining.vo.OrderListVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +106,27 @@ public class MiningServiceImpl implements MiningService {
 		BigDecimal total = timeAmout.add(mileAmout);
 		total.setScale(5, BigDecimal.ROUND_HALF_UP);
 		return total.toString();
+	}
+
+	@Override
+	public List<OrderListVo> queryListByMoenyOrder() {
+		List<OrderListVo> resultList = new ArrayList<OrderListVo>();
+		List<MiningOverview> miningOverviewList = new ArrayList<MiningOverview>();
+		miningOverviewList = miningInfoMapper.queryListByMoneyOrder();
+		if(null != miningOverviewList && miningOverviewList.size() > 0) {
+			for (MiningOverview miningOverview : miningOverviewList) {
+				OrderListVo order = new OrderListVo();
+				User user = userMapper.selectByPrimaryKey(miningOverview.getUserId());
+				if(null == user) {
+					continue;
+				}
+				order.setUsername(user.getUsername());
+				order.setMoney(miningOverview.getTotalAmount().toString());
+				resultList.add(order);
+			}
+			return resultList;
+		}
+		return null;
 	}
 
 	@Override

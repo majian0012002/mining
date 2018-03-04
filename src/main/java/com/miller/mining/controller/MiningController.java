@@ -2,13 +2,12 @@ package com.miller.mining.controller;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.miller.mining.model.MiningOverview;
+import com.miller.mining.vo.OrderListVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,6 +200,7 @@ public class MiningController extends BaseController {
 	 * @param requestVo
 	 * @return
 	 */
+	/**
 	@RequestMapping(value = "compute")
     @ResponseBody
 	public Map<String,String> computeInSingleMining(final HttpServletRequest request,
@@ -299,7 +299,7 @@ public class MiningController extends BaseController {
 			map.put("resultMessage", e.getMessage());
 		}
 		return map;
-	}
+	}**/
 	
 	private void checkParam(int checkMode, MiningInfoVo miningVo) throws VerifyException {
 		// TODO Auto-generated method stub
@@ -319,5 +319,22 @@ public class MiningController extends BaseController {
 				throw new VerifyException("本次挖矿总里程不能为空");
 			}
 		}
+	}
+
+	@RequestMapping(value = "queryMiningList")
+	@ResponseBody
+	public Map<String,Object> computeInSingleMining(final HttpServletRequest request,
+													@RequestBody RequestVo requestVo) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		logger.info("查询列表开始=========");
+
+		List<OrderListVo> miningOverviewList = new ArrayList<OrderListVo>();
+		miningOverviewList = miningService.queryListByMoenyOrder();
+
+		map.put("resultCode", ResponseCodeEnum.SUCCESS.getCode());
+		map.put("resultMessage","请求成功");
+		map.put("result",miningOverviewList);
+
+		return map;
 	}
 }

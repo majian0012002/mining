@@ -92,4 +92,11 @@
     from tab_miningoverview
     where USER_ID = #{userId,jdbcType=INTEGER}
   </select>
+
+  <select id="queryListByMoneyOrder" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tab_miningoverview
+    ORDER BY TOTAL_MILE
+  </select>
 </mapper>

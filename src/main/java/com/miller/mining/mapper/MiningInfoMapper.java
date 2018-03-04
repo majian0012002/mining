@@ -3,6 +3,7 @@ package com.miller.mining.mapper;
 import java.util.List;
 
 import com.miller.mining.model.MiningInfo;
+import com.miller.mining.model.MiningOverview;
 
 public interface MiningInfoMapper {
     int deleteByPrimaryKey(Integer id);
@@ -23,4 +24,10 @@ public interface MiningInfoMapper {
      * @return
      */
     List<MiningInfo> selectActiveByUsername(String username);
+
+    /**
+     *
+     * @return
+     */
+    List<MiningOverview> queryListByMoneyOrder();
 }

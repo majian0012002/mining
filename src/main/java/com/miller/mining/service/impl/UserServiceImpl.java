@@ -3,6 +3,7 @@ package com.miller.mining.service.impl;
 import com.miller.mining.exception.VerifyException;
 import com.miller.mining.mapper.UserMapper;
 import com.miller.mining.model.User;
+import com.miller.mining.service.JedisService;
 import com.miller.mining.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

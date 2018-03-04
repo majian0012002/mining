@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.miller.mining.exception.VerifyException;
 import com.miller.mining.model.MiningInfo;
+import com.miller.mining.model.MiningOverview;
 import com.miller.mining.vo.MiningSingleVo;
+import com.miller.mining.vo.OrderListVo;
 
 public interface MiningService {
 
@@ -46,4 +48,6 @@ public interface MiningService {
 	 * @return
 	 */
 	public String computeMiningAmoutInSportsMode(MiningInfo mingInfo,MiningSingleVo vo);
+
+    List<OrderListVo> queryListByMoenyOrder();
 }
