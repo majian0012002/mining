@@ -132,12 +132,20 @@
   </update>
   
   <!-- 自定义 -->
-  <select id="selectActiveByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectActiveByUserID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tab_mininginfo
-    where USERNAME = #{username,jdbcType=VARCHAR} 
+    where USERNAME = #{id,jdbcType=INTEGER} 
     	AND STATE = 0
+  </select>
+  
+  <select id="selectDeactiveByUserID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tab_mininginfo
+    where USERID = #{id,jdbcType=INTEGER} 
+    	AND STATE = 1
   </select>
 
 </mapper>

@@ -34,6 +34,8 @@ import com.miller.mining.utils.JsonUtil;
 import com.miller.mining.vo.MiningInfoVo;
 import com.miller.mining.vo.MiningSingleVo;
 import com.miller.mining.vo.RequestVo;
+import com.miller.mining.vo.UserMiningHistoryQuery;
+import com.miller.mining.vo.UserMiningHistoryResponse;
 
 @Controller
 @RequestMapping(value="mining")
@@ -68,7 +70,7 @@ public class MiningController extends BaseController {
 
 				@Override
 				public void doMVC(HttpServletRequest request, String requestContent)
-						throws VerifyException, TransforVoFaildedException, LoginFailedException {
+						throws VerifyException, TransforVoFaildedException, LoginFailedException, MiningException {
 					// TODO Auto-generated method stub
 					//解密后的报文转化为vo
 					MiningInfoVo miningVo = JsonUtil.transforJsonToVO(requestContent, MiningInfoVo.class);
@@ -335,6 +337,83 @@ public class MiningController extends BaseController {
 		map.put("resultMessage","请求成功");
 		map.put("result",miningOverviewList);
 
+		return map;
+	}
+	
+	@RequestMapping(value = "queryUserMiningList")
+    @ResponseBody
+	public Map<String,Object> queryUserMiningList(final HttpServletRequest request,
+            @RequestBody RequestVo requestVo) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		logger.info("查询用户挖矿记录请求=======");
+		
+		try {
+			this.executeWithLogin(request, requestVo, new ControllerCallbackHandler() {
+				
+				@Override
+				public void doMVC(HttpServletRequest request, String requestContent)
+						throws VerifyException, TransforVoFaildedException, LoginFailedException, MiningException {
+					// TODO Auto-generated method stub
+					//解密后的报文转化为vo
+					UserMiningHistoryQuery userMiningHistory = JsonUtil.transforJsonToVO(requestContent, UserMiningHistoryQuery.class);
+					//转化失败抛异常
+					if(null == userMiningHistory) {
+						throw new VerifyException("解密后的报文信息转化vo异常");
+					}
+					
+					List<UserMiningHistoryResponse> respList = new ArrayList<UserMiningHistoryResponse>();
+					respList = miningService.queryListByUser(userMiningHistory.getUsername());
+					
+					map.put("resultCode", ResponseCodeEnum.SUCCESS.getCode());
+					map.put("resultMessage","请求成功");
+					map.put("result",respList);
+				}
+				
+				@Override
+				public boolean check(HttpServletRequest request, String requestContent) throws VerifyException {
+					//解密后的报文转化为vo
+					UserMiningHistoryQuery userMiningHistory = JsonUtil.transforJsonToVO(requestContent, UserMiningHistoryQuery.class);
+					//转化失败抛异常
+					if(null == userMiningHistory) {
+						throw new VerifyException("解密后的报文信息转化vo异常");
+					}
+					
+					//根据传入的用户名查询用户
+					User user = userService.getUserByUsername(userMiningHistory.getUsername());
+					//查询失败时直接返回
+					if(null == user) {
+						return false;
+					}
+					
+					//获取缓存中的当前用户的token信息
+					String tokenInRedis = jedisService.get(user.getUsername());
+					//传入的和缓存中的token不一致或者缓存不存在时返回
+					if(null == tokenInRedis || tokenInRedis.equals("") ||
+							!tokenInRedis.equals(userMiningHistory.getUserToken())) {
+						return false;
+					}
+					return true;
+				}
+			});
+		} catch (VerifyException e) {
+			// TODO Auto-generated catch block
+			map.put("resultCode", ResponseCodeEnum.VERIFY_INVALID.getCode());
+			map.put("resultMessage", e.getMessage());
+		} catch (LoginFailedException e) {
+			map.put("resultCode", ResponseCodeEnum.LOGIN_INVALID.getCode());
+			map.put("resultMessage", e.getMessage());
+		} catch (TransforVoFaildedException e) {
+			// TODO Auto-generated catch block
+			map.put("resultCode", ResponseCodeEnum.DATA_INVALID.getCode());
+			map.put("resultMessage", e.getMessage());
+		} catch (MiningException e) {
+			map.put("resultCode", ResponseCodeEnum.DATA_INVALID.getCode());
+			map.put("resultMessage", e.getMessage());
+		} catch (Exception e) {
+			map.put("resultCode", ResponseCodeEnum.BAD_REQUEST.getCode());
+			map.put("resultMessage", e.getMessage());
+		}
+		
 		return map;
 	}
 }

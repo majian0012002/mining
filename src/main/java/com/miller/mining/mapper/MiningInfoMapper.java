@@ -23,11 +23,13 @@ public interface MiningInfoMapper {
      * @param username
      * @return
      */
-    List<MiningInfo> selectActiveByUsername(String username);
+    List<MiningInfo> selectActiveByUserID(Integer id);
 
     /**
      *
      * @return
      */
     List<MiningOverview> queryListByMoneyOrder();
+    
+    List<MiningInfo> selectDeactiveByUserID(int userId);	
 }

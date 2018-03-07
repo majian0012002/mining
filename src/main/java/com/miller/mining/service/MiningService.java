@@ -3,11 +3,13 @@ package com.miller.mining.service;
 import java.text.ParseException;
 import java.util.List;
 
+import com.miller.mining.exception.MiningException;
 import com.miller.mining.exception.VerifyException;
 import com.miller.mining.model.MiningInfo;
 import com.miller.mining.model.MiningOverview;
 import com.miller.mining.vo.MiningSingleVo;
 import com.miller.mining.vo.OrderListVo;
+import com.miller.mining.vo.UserMiningHistoryResponse;
 
 public interface MiningService {
 
@@ -15,8 +17,9 @@ public interface MiningService {
 	 * 根据用户名查询当前正在运行的挖掘
 	 * @param username
 	 * @return
+	 * @throws MiningException 
 	 */
-	public List<MiningInfo> getActiveMiningInfoByUsername(String username);
+	public List<MiningInfo> getActiveMiningInfoByUsername(String username) throws MiningException;
 	
 	public MiningInfo getMiningInfoById(int id);
 	
@@ -50,4 +53,6 @@ public interface MiningService {
 	public String computeMiningAmoutInSportsMode(MiningInfo mingInfo,MiningSingleVo vo);
 
     List<OrderListVo> queryListByMoenyOrder();
+
+	public List<UserMiningHistoryResponse> queryListByUser(String username) throws MiningException;
 }

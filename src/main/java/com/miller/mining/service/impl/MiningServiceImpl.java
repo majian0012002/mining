@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.miller.mining.vo.OrderListVo;
+import com.miller.mining.vo.UserMiningHistoryResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.miller.mining.comm.MiningRuleConstant;
+import com.miller.mining.exception.MiningException;
 import com.miller.mining.exception.VerifyException;
 import com.miller.mining.mapper.MiningInfoMapper;
 import com.miller.mining.mapper.MiningOverviewMapper;
@@ -35,9 +38,14 @@ public class MiningServiceImpl implements MiningService {
 	private MiningOverviewMapper overviewMapper;
 
 	@Override
-	public List<MiningInfo> getActiveMiningInfoByUsername(String username) {
+	public List<MiningInfo> getActiveMiningInfoByUsername(String username) throws MiningException {
 		// TODO Auto-generated method stub
-		List<MiningInfo> miningList = miningInfoMapper.selectActiveByUsername(username);
+		User user = userMapper.selectUserByUsername(username);
+		if(null == user) {
+			throw new MiningException("根据user[" + username + "]获取不到用户");
+		}
+		
+		List<MiningInfo> miningList = miningInfoMapper.selectActiveByUserID(user.getId());
 		return miningList;
 	}
 	
@@ -134,6 +142,32 @@ public class MiningServiceImpl implements MiningService {
 		// TODO Auto-generated method stub
 		MiningInfo info = miningInfoMapper.selectByPrimaryKey(id);
 		return info;
+	}
+
+	@Override
+	public List<UserMiningHistoryResponse> queryListByUser(String username) throws MiningException {
+		// TODO Auto-generated method stub
+		User user = userMapper.selectUserByUsername(username);
+		if(null == user) {
+			throw new MiningException("根据user[" + username + "]获取不到用户");
+		}
+		
+		List<MiningInfo> miningInfoList = new ArrayList<MiningInfo>();
+		miningInfoList = miningInfoMapper.selectDeactiveByUserID(user.getId());
+		if(miningInfoList.size() > 0) {
+			List<UserMiningHistoryResponse> respList = new ArrayList<UserMiningHistoryResponse>();
+			for(MiningInfo info : miningInfoList) {
+				UserMiningHistoryResponse resp = new UserMiningHistoryResponse();
+				resp.setStartTime(info.getStartTime());
+				resp.setEndTime(info.getEndTime());
+				resp.setTotalTime(info.getRunningTime().setScale(5, BigDecimal.ROUND_HALF_UP).toString());
+				resp.setTotalMoney(info.getMiningAmount().setScale(5, BigDecimal.ROUND_HALF_UP).toString());
+				resp.setTotalMiles(info.getRunningMile().setScale(5, BigDecimal.ROUND_HALF_UP).toString());
+				respList.add(resp);
+			}
+			return respList;
+		}
+		return null;
 	}
 
 }

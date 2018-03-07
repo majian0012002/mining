@@ -48,7 +48,7 @@ public class BaseController {
         if(null == reqVo || reqVo.getContent().equals("")) {
             throw new VerifyException("请求报文为空");
         }
-        String content = EncryUtil.AESDecode(reqVo.getContent());
+        String content = EncryUtil.base64Decode(reqVo.getContent());
         logger.info("经过转换后的请求报文:\n" + content);
         if(null == content || content.equals("")) {
             throw new VerifyException("转换报文失败");
