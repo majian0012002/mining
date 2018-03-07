@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miller.mining.callback.ControllerCallbackHandler;
@@ -321,10 +322,9 @@ public class MiningController extends BaseController {
 		}
 	}
 
-	@RequestMapping(value = "queryMiningList")
+	@RequestMapping(value = "queryMiningList",method=RequestMethod.GET)
 	@ResponseBody
-	public Map<String,Object> computeInSingleMining(final HttpServletRequest request,
-													@RequestBody RequestVo requestVo) {
+	public Map<String,Object> queryMinigList(final HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		logger.info("查询列表开始=========");
 
