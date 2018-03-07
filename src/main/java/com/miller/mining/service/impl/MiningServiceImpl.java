@@ -112,7 +112,7 @@ public class MiningServiceImpl implements MiningService {
 	public List<OrderListVo> queryListByMoenyOrder() {
 		List<OrderListVo> resultList = new ArrayList<OrderListVo>();
 		List<MiningOverview> miningOverviewList = new ArrayList<MiningOverview>();
-		miningOverviewList = miningInfoMapper.queryListByMoneyOrder();
+		miningOverviewList = overviewMapper.queryListByMoneyOrder();
 		if(null != miningOverviewList && miningOverviewList.size() > 0) {
 			for (MiningOverview miningOverview : miningOverviewList) {
 				OrderListVo order = new OrderListVo();

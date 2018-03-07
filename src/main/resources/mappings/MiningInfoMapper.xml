@@ -139,4 +139,5 @@
     where USERNAME = #{username,jdbcType=VARCHAR} 
     	AND STATE = 0
   </select>
+
 </mapper>
