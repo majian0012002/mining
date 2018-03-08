@@ -6,7 +6,7 @@
 	<groupId>com.miller</groupId>
 	<artifactId>mining</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>war</packaging>
 
 	<name>mining</name>
 	<description>Backend for mining App</description>
