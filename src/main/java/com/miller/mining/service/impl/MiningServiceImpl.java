@@ -36,6 +36,7 @@ public class MiningServiceImpl implements MiningService {
 	private UserMapper userMapper;
 	@Autowired
 	private MiningOverviewMapper overviewMapper;
+	private MiningOverview overview;
 
 	@Override
 	public List<MiningInfo> getActiveMiningInfoByUsername(String username) throws MiningException {
@@ -75,14 +76,14 @@ public class MiningServiceImpl implements MiningService {
 			newOverview.setTotalAmount(miningInfo.getMiningAmount());
 			newOverview.setTotalMile(miningInfo.getRunningMile());
 			newOverview.setTotalTime(new BigDecimal(DateUtil.getDistanceOfDate(miningInfo.getEndTime(), miningInfo.getStartTime(), 
-					"yyyy-MM-dd HH:mm:ss")));
+					"yyyy-MM-ddHH:mm:ss")));
 			newOverview.setUserId(user.getId());
 			overviewMapper.insert(newOverview);
 		} else {
 			overview.setTotalAmount(overview.getTotalAmount().add(miningInfo.getMiningAmount()));
 			overview.setTotalMile(overview.getTotalMile().add(miningInfo.getRunningMile()));
 			overview.setTotalTime(overview.getTotalTime().add(new BigDecimal(DateUtil.getDistanceOfDate(miningInfo.getEndTime(), miningInfo.getStartTime(), 
-					"yyyy-MM-dd HH:mm:ss"))));
+					"yyyy-MM-ddHH:mm:ss"))));
 			overviewMapper.updateByPrimaryKey(overview);
 		}
 	}
