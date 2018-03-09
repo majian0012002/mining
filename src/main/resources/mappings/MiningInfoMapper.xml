@@ -136,7 +136,7 @@
     select 
     <include refid="Base_Column_List" />
     from tab_mininginfo
-    where USERNAME = #{id,jdbcType=INTEGER} 
+    where USER_ID = #{id,jdbcType=INTEGER}
     	AND STATE = 0
   </select>
   
@@ -144,7 +144,7 @@
     select 
     <include refid="Base_Column_List" />
     from tab_mininginfo
-    where USERID = #{id,jdbcType=INTEGER} 
+    where USER_ID = #{id,jdbcType=INTEGER}
     	AND STATE = 1
   </select>
 

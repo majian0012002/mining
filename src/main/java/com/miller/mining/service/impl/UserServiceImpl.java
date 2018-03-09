@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         verifyUserInfo(user);
         //根据用户名查询用户
         User foundUser = userMapper.selectUserByUsername(user.getUsername());
-        if(user.getPassword().equals(foundUser.getPassword())) {
+        if(null != foundUser && user.getPassword().equals(foundUser.getPassword())) {
             //若phoneid不一致，说明更换手机登陆，需要修改数据库中phoneid
             if(!user.getPhoneId().equals(foundUser.getPhoneId())) {
                 foundUser.setPhoneId(user.getPhoneId());
