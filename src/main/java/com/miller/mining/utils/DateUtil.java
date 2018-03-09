@@ -34,15 +34,18 @@ public class DateUtil {
 		return getDistanceOfDate(date1,date2);
 	}
 	
+
 	/**
 	public static void main(String[] args) {
 		try {
-			Date date = getDateWithFormat("yyyy-MM-dd HH:mm:ss", new Date());
-			System.out.println(new Date());
+			String dateStr = getDateStrWithFormat("yyyy-MM-ddHH:mm:ss", new Date());
+			System.out.println(dateStr);
+			Date date = getDateFromDateStr("yyyy-MM-ddHH:mm:ss",dateStr);
+			System.out.println(date);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	**/
+	}**/
+
 }

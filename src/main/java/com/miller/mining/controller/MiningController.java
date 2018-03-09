@@ -90,7 +90,7 @@ public class MiningController extends BaseController {
 							//遍历并结束所有进行中的挖掘
 							for(MiningInfo info : activeMiningInfoList) {
 								try {
-									info.setEndTime(DateUtil.getDateStrWithFormat("yyyy-MM-dd HH:mm:ss", 
+									info.setEndTime(DateUtil.getDateStrWithFormat("yyyy-MM-ddHH:mm:ss",
 											new Date()));
 									info.setState(1);
 									miningService.endMining(info,miningVo.getUsername());
@@ -132,7 +132,7 @@ public class MiningController extends BaseController {
 							miningInfo.setRunningMile(new BigDecimal(miningVo.getRunningMile()));
 							try {
 								miningInfo.setRunningTime(new BigDecimal(DateUtil.getDistanceOfDate(miningInfo.getEndTime(), miningInfo.getStartTime(), 
-										"yyyy-MM-dd HH:mm:ss")));
+										"yyyy-MM-ddHH:mm:ss")));
 							} catch (ParseException e) {
 								// TODO Auto-generated catch block
 								map.put("resultCode", ResponseCodeEnum.DATA_INVALID.getCode());
