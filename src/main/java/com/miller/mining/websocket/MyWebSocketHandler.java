@@ -15,20 +15,24 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
+import org.springframework.web.socket.handler.AbstractWebSocketHandler;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import javax.websocket.*;
+import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
+@ServerEndpoint("/miningws")
 @Component
-public class MyWebSocketHandler implements WebSocketHandler {
+public class MyWebSocketHandler{
 
     private static Logger logger = LoggerFactory.getLogger(MyWebSocketHandler.class  );
 
-    public static final Map<String,WebSocketSession> userSessionMap;
+    public static final Map<String,Session> userSessionMap;
 
     public static AtomicInteger totalUser = new AtomicInteger(0);
 
@@ -36,31 +40,31 @@ public class MyWebSocketHandler implements WebSocketHandler {
     private MiningService miningService;
 
     static {
-        userSessionMap = new ConcurrentHashMap<String,WebSocketSession>();
+        userSessionMap = new ConcurrentHashMap<String,Session>();
     }
 
-    @Override
-    public void afterConnectionEstablished(WebSocketSession webSocketSession) throws Exception {
+    @OnOpen
+    public void afterConnectionEstablished(Session webSocketSession) throws Exception {
         logger.info("开始建立连接====");
-        String username = (String) webSocketSession.getAttributes().get("username");
+        String username = webSocketSession.getId();
         userSessionMap.put(username,webSocketSession);
         totalUser.incrementAndGet();
     }
 
-    @Override
-    public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
-        if(webSocketMessage.getPayloadLength()==0)
-            return;
+    @OnMessage
+    public void handleMessage(Session webSocketSession, String webSocketMessage) throws Exception {
+//        if(webSocketMessage.getPayloadLength()==0)
+//            return;
 
         Map<String,String> map = new HashMap<String,String>();
-        String username = (String) webSocketSession.getAttributes().get("username");
-        MiningSingleVo miningVo = JsonUtil.transforJsonToVO(webSocketMessage.getPayload().toString(), MiningSingleVo.class);
+        String username = (String) webSocketSession.getId();
+        MiningSingleVo miningVo = JsonUtil.transforJsonToVO(webSocketMessage, MiningSingleVo.class);
         //转化失败抛异常
         if(null == miningVo) {
             throw new VerifyException("解密后的报文信息转化vo异常");
         }
 
-        MiningInfo miningInfo = miningService.getMiningInfoById(miningVo.getMiningId());
+        MiningInfo miningInfo = miningService.getMiningInfoById(Integer.parseInt(miningVo.getMiningId()));
 
         //查询不出来，抛异常
         if(null == miningInfo) {
@@ -94,7 +98,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
         map.put("increateCount", miningAmoutOfThisTime);
         map.put("totalUser",String.valueOf(MyWebSocketHandler.totalUser));
 
-        sendToUser(username, new TextMessage(JSON.toJSONString(map)));
+        sendToUser(username, JSON.toJSONString(map));
     }
 
     /**
@@ -103,31 +107,23 @@ public class MyWebSocketHandler implements WebSocketHandler {
      * @param message
      * @throws IOException
      */
-    private void sendToUser(String username, TextMessage message) throws IOException {
-        WebSocketSession session = userSessionMap.get(username);
+    private void sendToUser(String username, String message) throws IOException {
+        Session session = userSessionMap.get(username);
         if(null != session && session.isOpen()) {
-            session.sendMessage(message);
+            session.getBasicRemote().sendText(message);
         }
     }
 
-    @Override
-    public void handleTransportError(WebSocketSession webSocketSession, Throwable throwable) throws Exception {
+    @OnError
+    public void handleTransportError(Session webSocketSession, Throwable throwable) throws Exception {
         logger.info("通信出现异常，断开连接");
-        String username = (String) webSocketSession.getAttributes().get("username");
+        String username = webSocketSession.getId();
         userSessionMap.remove(username);
         totalUser.decrementAndGet();
     }
 
-    @Override
-    public void afterConnectionClosed(WebSocketSession webSocketSession, CloseStatus closeStatus) throws Exception {
+    @OnClose
+    public void afterConnectionClosed() throws Exception {
         logger.info("开始失去连接====");
-        String username = (String) webSocketSession.getAttributes().get("username");
-        userSessionMap.remove(username);
-        totalUser.decrementAndGet();
-    }
-
-    @Override
-    public boolean supportsPartialMessages() {
-        return false;
     }
 }

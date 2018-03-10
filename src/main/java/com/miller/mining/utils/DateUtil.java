@@ -22,7 +22,7 @@ public class DateUtil {
 		if(null == date1 || null == date2) {
 			throw new VerifyException("开始时间或结束时间不能为空");
 		}
-		long distance = Math.abs(date2.getTime() - date1.getTime());
+		long distance = Math.abs(date2.getTime() - date1.getTime()) / (1000 * 60 * 60);
 		
 		return distance;
 	}

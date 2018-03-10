@@ -105,7 +105,8 @@ public class MiningController extends BaseController {
 							startInfo.setStartTime(miningVo.getStartTime());
 							startInfo.setType(miningVo.getMingType());
 							startInfo.setState(0);
-							miningService.startMining(startInfo,miningVo.getUsername());
+							int id = miningService.startMining(startInfo,miningVo.getUsername());
+							map.put("miningId",String.valueOf(id));
 						}
 						//列表数量为0，说明不存在进行中的挖掘，直接开始
 						else {
@@ -114,7 +115,8 @@ public class MiningController extends BaseController {
 							startInfo.setStartTime(miningVo.getStartTime());
 							startInfo.setType(miningVo.getMingType());
 							startInfo.setState(0);
-							miningService.startMining(startInfo,miningVo.getUsername());
+							int id = miningService.startMining(startInfo,miningVo.getUsername());
+							map.put("miningId",String.valueOf(id));
 						}
 					}
 					//结束挖掘
@@ -148,6 +150,9 @@ public class MiningController extends BaseController {
 							}
 						}
 					}
+
+					map.put("resultCode", ResponseCodeEnum.SUCCESS.getCode());
+					map.put("resultMessage", ResponseCodeEnum.SUCCESS.getDescription());
 				}
 
 				@Override
@@ -203,7 +208,7 @@ public class MiningController extends BaseController {
 	 * @param requestVo
 	 * @return
 	 */
-	/**
+
 	@RequestMapping(value = "compute")
     @ResponseBody
 	public Map<String,String> computeInSingleMining(final HttpServletRequest request,
@@ -223,7 +228,7 @@ public class MiningController extends BaseController {
 						throw new VerifyException("解密后的报文信息转化vo异常");
 					}
 					
-					MiningInfo miningInfo = miningService.getMiningInfoById(miningVo.getMiningId());
+					MiningInfo miningInfo = miningService.getMiningInfoById(Integer.parseInt(miningVo.getMiningId()));
 					
 					//查询不出来，抛异常
 					if(null == miningInfo) {
@@ -260,7 +265,7 @@ public class MiningController extends BaseController {
 				@Override
 				public boolean check(HttpServletRequest request, String requestContent) throws VerifyException {
 					//解密后的报文转化为vo
-					MiningInfoVo mingVo = JsonUtil.transforJsonToVO(requestContent, MiningInfoVo.class);
+					MiningSingleVo mingVo = JsonUtil.transforJsonToVO(requestContent, MiningSingleVo.class);
 					//转化失败抛异常
 					if(null == mingVo) {
 						throw new VerifyException("解密后的报文信息转化vo异常");
@@ -302,7 +307,7 @@ public class MiningController extends BaseController {
 			map.put("resultMessage", e.getMessage());
 		}
 		return map;
-	}**/
+	}
 	
 	private void checkParam(int checkMode, MiningInfoVo miningVo) throws VerifyException {
 		// TODO Auto-generated method stub
@@ -414,6 +419,28 @@ public class MiningController extends BaseController {
 			map.put("resultMessage", e.getMessage());
 		}
 		
+		return map;
+	}
+
+	@RequestMapping(value = "queryUserAccount",method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> queryUserAccount(final HttpServletRequest request) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		logger.info("查询列表开始=========");
+
+		String username = request.getParameter("username");
+		logger.info("开始查询[" + username + "]的金币信息");
+
+		try {
+			String account = miningService.queryUserAccount(username);
+			map.put("resultCode", ResponseCodeEnum.SUCCESS.getCode());
+			map.put("resultMessage","请求成功");
+			map.put("totalAmount",account);
+		} catch (VerifyException e) {
+			map.put("resultCode", ResponseCodeEnum.VERIFY_INVALID.getCode());
+			map.put("resultMessage", e.getMessage());
+		}
+
 		return map;
 	}
 }

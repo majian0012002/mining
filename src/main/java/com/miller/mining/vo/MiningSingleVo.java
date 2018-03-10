@@ -6,16 +6,15 @@ public class MiningSingleVo {
 	private String userToken;
 	private int mingType;
 	private String duringTime;
-	private int currentMile;
-	private int lastMile;
-	private int miningId;
+	private String currentMile;
+	private String lastMile;
+	private String miningId;
 	
 	public MiningSingleVo() {
 		super();
 	}
-	public MiningSingleVo(String username, String userToken, int mingType, String duringTime, int currentMile,
-			int lastMile, int miningId) {
-		super();
+
+	public MiningSingleVo(String username, String userToken, int mingType, String duringTime, String currentMile, String lastMile, String miningId) {
 		this.username = username;
 		this.userToken = userToken;
 		this.mingType = mingType;
@@ -24,7 +23,6 @@ public class MiningSingleVo {
 		this.lastMile = lastMile;
 		this.miningId = miningId;
 	}
-	
 
 	public String getUsername() {
 		return username;
@@ -58,27 +56,27 @@ public class MiningSingleVo {
 		this.duringTime = duringTime;
 	}
 
-	public int getCurrentMile() {
+	public String getCurrentMile() {
 		return currentMile;
 	}
 
-	public void setCurrentMile(int currentMile) {
+	public void setCurrentMile(String currentMile) {
 		this.currentMile = currentMile;
 	}
 
-	public int getLastMile() {
+	public String getLastMile() {
 		return lastMile;
 	}
 
-	public void setLastMile(int lastMile) {
+	public void setLastMile(String lastMile) {
 		this.lastMile = lastMile;
 	}
 
-	public int getMiningId() {
+	public String getMiningId() {
 		return miningId;
 	}
 
-	public void setMiningId(int miningId) {
+	public void setMiningId(String miningId) {
 		this.miningId = miningId;
 	}
 }

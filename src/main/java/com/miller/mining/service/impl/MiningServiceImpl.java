@@ -2,8 +2,7 @@ package com.miller.mining.service.impl;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.miller.mining.vo.OrderListVo;
 import com.miller.mining.vo.UserMiningHistoryResponse;
@@ -57,8 +56,8 @@ public class MiningServiceImpl implements MiningService {
 		User user = userMapper.selectUserByUsername(username);
 		logger.info("获取到的用户id: " + user.getId());
 		miningInfo.setUserId(user.getId());
-		int id = miningInfoMapper.insertSelective(miningInfo);
-		return id;
+		miningInfoMapper.insertSelective(miningInfo);
+		return miningInfo.getId();
 	}
 
 	@Override
@@ -67,6 +66,7 @@ public class MiningServiceImpl implements MiningService {
 		User user = userMapper.selectUserByUsername(username);
 		logger.info("获取到的用户id: " + user.getId());
 		miningInfo.setUserId(user.getId());
+		miningInfoMapper.updateByPrimaryKey(miningInfo);
 		//结束本次挖掘后需要更新汇总信息
 		MiningOverview overview = overviewMapper.selectByUser(user.getId());
 		
@@ -107,7 +107,7 @@ public class MiningServiceImpl implements MiningService {
 				"30" : vo.getDuringTime());
 		BigDecimal timeAmout = duringTime.divide(new BigDecimal(30)).multiply(new BigDecimal(MiningRuleConstant.COIN_OF_PER_HALF_MINUTES));
 		//根据里程计算挖掘数量
-		int mileDistance = vo.getCurrentMile() - vo.getLastMile();
+		int mileDistance = Integer.parseInt(vo.getCurrentMile()) - Integer.parseInt(vo.getLastMile());
 		mileDistance = mileDistance > 833 ? 833 : mileDistance;
 		BigDecimal mileAmout = new BigDecimal((double)mileDistance / 1000).multiply(new BigDecimal(MiningRuleConstant.COIN_OF_PER_MILE));
 		mileAmout = mileAmout.max(new BigDecimal(4.615));
@@ -166,9 +166,36 @@ public class MiningServiceImpl implements MiningService {
 				resp.setTotalMiles(info.getRunningMile().setScale(5, BigDecimal.ROUND_HALF_UP).toString());
 				respList.add(resp);
 			}
+			Collections.sort(respList, new Comparator<UserMiningHistoryResponse>() {
+				@Override
+				public int compare(UserMiningHistoryResponse o1, UserMiningHistoryResponse o2) {
+					try {
+						Date date1 = DateUtil.getDateFromDateStr("yyyy-MM-ddHH:mm:ss",o1.getEndTime());
+						Date date2 = DateUtil.getDateFromDateStr("yyyy-MM-ddHH:mm:ss",o2.getEndTime());
+						return date1.getTime() > date2.getTime() ? 1 : -1;
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					return 0;
+				}
+			});
 			return respList;
 		}
 		return null;
+	}
+
+	@Override
+	public String queryUserAccount(String username) throws VerifyException {
+		User user = userMapper.selectUserByUsername(username);
+
+		if (null == user) {
+			throw new VerifyException("无法根据用户名【" + username +"】查询用户");
+
+		}
+
+		MiningOverview miningOverview = overviewMapper.selectByUser(user.getId());
+		String account = miningOverview.getTotalAmount().toString();
+		return account;
 	}
 
 }

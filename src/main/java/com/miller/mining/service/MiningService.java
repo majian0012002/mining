@@ -55,4 +55,6 @@ public interface MiningService {
     List<OrderListVo> queryListByMoenyOrder();
 
 	public List<UserMiningHistoryResponse> queryListByUser(String username) throws MiningException;
+
+	public String queryUserAccount(String username) throws VerifyException;
 }
