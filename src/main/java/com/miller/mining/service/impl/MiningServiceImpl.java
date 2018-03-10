@@ -194,6 +194,10 @@ public class MiningServiceImpl implements MiningService {
 		}
 
 		MiningOverview miningOverview = overviewMapper.selectByUser(user.getId());
+
+		if (null == miningOverview) {
+			return "0";
+		}
 		String account = miningOverview.getTotalAmount().toString();
 		return account;
 	}
