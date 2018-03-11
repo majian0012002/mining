@@ -75,7 +75,7 @@ public class MiningServiceImpl implements MiningService {
 			MiningOverview newOverview = new MiningOverview();
 			newOverview.setTotalAmount(miningInfo.getMiningAmount());
 			newOverview.setTotalMile(miningInfo.getRunningMile());
-			newOverview.setTotalTime(new BigDecimal(DateUtil.getDistanceOfDate(miningInfo.getEndTime(), miningInfo.getStartTime(), 
+			newOverview.setTotalTime(new BigDecimal(DateUtil.getDistanceOfDate(miningInfo.getEndTime(), miningInfo.getStartTime(),
 					"yyyy-MM-ddHH:mm:ss")));
 			newOverview.setUserId(user.getId());
 			overviewMapper.insert(newOverview);
@@ -95,6 +95,11 @@ public class MiningServiceImpl implements MiningService {
 				"30" : vo.getDuringTime());
 		BigDecimal amout = duringTime.divide(new BigDecimal(30)).multiply(new BigDecimal(MiningRuleConstant.COIN_OF_PER_HALF_MINUTES));
 		amout.setScale(5, BigDecimal.ROUND_HALF_UP);
+
+		mingInfo.setRunningMile(new BigDecimal(0));
+		mingInfo.setRunningTime(mingInfo.getRunningTime().add(new BigDecimal(vo.getDuringTime())));
+		mingInfo.setMiningAmount(amout);
+		miningInfoMapper.updateByPrimaryKey(mingInfo);
 		
 		//更新overview
 		return amout.toString();
@@ -114,6 +119,11 @@ public class MiningServiceImpl implements MiningService {
 		
 		BigDecimal total = timeAmout.add(mileAmout);
 		total.setScale(5, BigDecimal.ROUND_HALF_UP);
+
+		mingInfo.setRunningMile(new BigDecimal(mileDistance));
+		mingInfo.setRunningTime(mingInfo.getRunningTime().add(new BigDecimal(vo.getDuringTime())));
+		mingInfo.setMiningAmount(total);
+		miningInfoMapper.updateByPrimaryKey(mingInfo);
 		return total.toString();
 	}
 
