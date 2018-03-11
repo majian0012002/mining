@@ -107,7 +107,7 @@ public class MiningController extends BaseController {
 							startInfo.setState(0);
 							startInfo.setMiningAmount(new BigDecimal(0));
 							startInfo.setRunningTime(new BigDecimal(0));
-							startInfo.setMiningAmount(new BigDecimal(0));
+							startInfo.setRunningMile(new BigDecimal(0));
 							int id = miningService.startMining(startInfo,miningVo.getUsername());
 							map.put("miningId",String.valueOf(id));
 						}
@@ -120,7 +120,7 @@ public class MiningController extends BaseController {
 							startInfo.setState(0);
 							startInfo.setMiningAmount(new BigDecimal(0));
 							startInfo.setRunningTime(new BigDecimal(0));
-							startInfo.setMiningAmount(new BigDecimal(0));
+							startInfo.setRunningMile(new BigDecimal(0));
 							int id = miningService.startMining(startInfo,miningVo.getUsername());
 							map.put("miningId",String.valueOf(id));
 						}
