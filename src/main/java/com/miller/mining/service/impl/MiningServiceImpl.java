@@ -208,7 +208,7 @@ public class MiningServiceImpl implements MiningService {
 		if (null == miningOverview) {
 			return "0";
 		}
-		String account = miningOverview.getTotalAmount().toString();
+		String account = miningOverview.getTotalAmount() == null ?  "0" : miningOverview.getTotalAmount().toString();
 		return account;
 	}
 

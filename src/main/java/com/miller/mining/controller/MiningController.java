@@ -105,6 +105,9 @@ public class MiningController extends BaseController {
 							startInfo.setStartTime(miningVo.getStartTime());
 							startInfo.setType(miningVo.getMingType());
 							startInfo.setState(0);
+							startInfo.setMiningAmount(new BigDecimal(0));
+							startInfo.setRunningTime(new BigDecimal(0));
+							startInfo.setMiningAmount(new BigDecimal(0));
 							int id = miningService.startMining(startInfo,miningVo.getUsername());
 							map.put("miningId",String.valueOf(id));
 						}
