@@ -115,7 +115,7 @@ public class MiningServiceImpl implements MiningService {
 		int mileDistance = Integer.parseInt(vo.getCurrentMile()) - Integer.parseInt(vo.getLastMile());
 		mileDistance = mileDistance > 833 ? 833 : mileDistance;
 		BigDecimal mileAmout = new BigDecimal((double)mileDistance / 1000).multiply(new BigDecimal(MiningRuleConstant.COIN_OF_PER_MILE));
-		mileAmout = mileAmout.max(new BigDecimal(4.615));
+		mileAmout = mileAmout.min(new BigDecimal(4.615));
 		
 		BigDecimal total = timeAmout.add(mileAmout);
 		total.setScale(5, BigDecimal.ROUND_HALF_UP);
