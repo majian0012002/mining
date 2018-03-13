@@ -97,6 +97,6 @@
     select
     <include refid="Base_Column_List" />
     from tab_miningoverview
-    ORDER BY TOTAL_MILE
+    ORDER BY TOTAL_AMOUNT DESC
   </select>
 </mapper>
